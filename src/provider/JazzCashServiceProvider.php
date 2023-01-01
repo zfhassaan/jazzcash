@@ -1,6 +1,6 @@
 <?php
 
-namespace zfhassaan\jazzcash;
+namespace zfhassaan\jazzcash\provider;
 
 class JazzCashServiceProvider extends \Illuminate\Support\ServiceProvider
 {

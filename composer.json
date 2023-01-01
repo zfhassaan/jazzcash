@@ -17,5 +17,15 @@
             "email": "zfhassaan@gmail.com"
         }
     ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "zfhassaan\\JazzCash\\provider\\JazzCashServiceProvider"
+            ],
+            "aliases": {
+                "jazzcash": "zfhassaan\\JazzCash\\facade\\JazzCashFacade"
+            }
+        }
+    },
     "minimum-stability": "beta"
 }

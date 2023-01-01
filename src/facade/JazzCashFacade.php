@@ -1,6 +1,6 @@
 <?php
 
-namespace zfhassaan\jazzcash;
+namespace zfhassaan\jazzcash\facade;
 
 use Illuminate\Support\Facades\Facade;
 
