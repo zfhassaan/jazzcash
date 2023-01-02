@@ -14,22 +14,20 @@ This Package only hosted checkout process. There's no Subscription option enable
 
 
 #### About
-Looking for a secure and reliable payment gateway in Pakistan? JazzCash offers fast transaction processing, advanced fraud protection, and a user-friendly interface for businesses of all sizes. As a small business owner, e-commerce store owner, or developer, you can find a solution that fits your needs with JazzCash. Our detailed guide will show you how to easily integrate with the JazzCash Hosted Checkout for hassle-free online payments from your customers. Trust JazzCash to help you grow your online sales and reach your business goals.
-
-This document contains detailed explanation about how to integrate with Jazzcash Hosted Checkout.
-<small>v1.0.0</small>
+JazzCash is a leading payment gateway in Pakistan that allows businesses to securely accept online payments from their customers. With fast and reliable transaction processing, advanced fraud protection, and a user-friendly interface, JazzCash makes it easy for merchants to grow their online sales. Whether you're a small business owner, e-commerce store owner, or a developer looking to integrate a payment gateway into your website or mobile app, JazzCash has a solution that fits your needs.
+This document contains a detailed explanation of how to integrate with JazzCash's hosted checkout feature (version 1.0.0).
 
 #### Intended Audience
-This document is for merchants acquires and developers who want to integrate with Jazzcash to perform a HostedCheckout.
+This document is for merchants and developers who want to integrate with JazzCash to perform a hosted checkout.
 
 #### Integration Scope
-The merchant will implement all ecommerce functionality. Jazzcash service (Jazzcash) will be used only payment processing with hosted checkout.
+The merchant will implement all e-commerce functionality. The JazzCash service will only be used for payment processing with the hosted checkout feature.
 
 #### API End Points
-This package only contains the hosted checkout process, there's no API Endpoint specified for direct checkout.
+This package only contains the hosted checkout process. There are no API endpoints specified for direct checkout.
 
 #### Integration Prerequisites
-Merchants will be registered on Jazzcash prior to integration. After merchant sign up for Jazzcash account, following two unique values will be provided to merchant to operate: *Merchant_ID* , *Password*, *Hashkey*, *Sandbox url* and *Production url* will be provided by jazzcash, these keys are used to get a one-time authentication token, which is used to authenticate payment requests to the "Jazzcash"payment gateway.
+Merchants must be registered with JazzCash prior to integration. After signing up for a JazzCash account, the merchant will receive the following unique values to operate: `Merchant_ID`, `Password`, `Hashkey`, `Sandbox URL`, and `Production URL`. These keys are used to get a one-time authentication token, which
 
 #### Installation
 You can install the package via composer
@@ -51,7 +49,7 @@ JAZZCASH_RETURNURL=
 ```
 
 #### configuration
-Add These files in `app/config.php`
+In your `app/config.php` file, add the following line to the providers array:
 
 ```php 
     /*
@@ -62,7 +60,7 @@ Add These files in `app/config.php`
 ```
 
 
-and also in alias in `app/config.php`
+In the `aliases` array of the same file, add the following line:
 
 ```php 
   'aliases' => Facade::defaultAliases()->merge([
@@ -70,7 +68,7 @@ and also in alias in `app/config.php`
     ])->toArray(),
 ```
 #### Publish Vendor:
-Once it's done then publish the jazzcash assets by using the following command: 
+Publish the package assets by running the following command:
 
 ```bash
 php artisan vendor:publish 
@@ -78,11 +76,11 @@ php artisan vendor:publish
 This will show the following response in terminal:
 ![img.png](img.png)
 
-press 9 to publish ```zfhassaan\jazzcash\provider\ServiceProvider```
+press 9 to publish ```zfhassaan\jazzcash\provider\ServiceProvider``` provider
 
 #### Steps:
 ##### Hosted Checkout
-Send a Post Request with following params: 
+To initiate the hosted checkout process, send a POST request with the following parameters:
 
 ```json
 {
@@ -92,31 +90,38 @@ Send a Post Request with following params:
 }
 ```
 
-and in controller:
+Then, in your controller, use the following code:
 
 ```php
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
         $jazzcash = new JazzCash();
         $jazzcash->setAmount($request->amount);
         $jazzcash->setBillReference($request->billref);
         $jazzcash->setProductDescription($request->productDescription);
         return $jazzcash->sendRequest();
-    }
 ```
-The index function is called and a new instance of the JazzCash class is created.
+The index function is called and a new instance of the JazzCash class is created. The setAmount, setBillReference, and setProductDescription methods are called on the JazzCash object, passing in the amount, billref, and productDescription values from the request as arguments. These methods set the corresponding properties of the JazzCash object to the specified values.
 
-The setAmount, setBillReference, and setProductDescription methods are called on the JazzCash object, passing in the amount, billref, and productDescription values from the request as arguments. These methods set the corresponding properties of the JazzCash object to the specified values.
+The sendRequest method is called on the JazzCash object. This method sends a request to the JazzCash API to initiate the checkout process and returns the response from the API as an HTML template which can be rendered on the web and mobile application. To hide or show fields, you can use CSS to control the field's visibility on the frontend.
 
-The sendRequest method is called on the JazzCash object. This method sends a request to the JazzCash API to initiate the checkout process and returns the response from the API as a HTML template which can be rendered on the web and mobile application, to hide or show fields you can use css to control the fields visibility on frontend.
+The response from the API is returned by the index function. This response can be used to display the hosted checkout form on your website or mobile app.
 
-The response from the API is returned by the index function. This response can be used to display the hosted checkout form or process the transaction in some other way.
+### Refunds
+To initiate a refund, send a POST request with the following parameters:
 
+```php 
+$jazzcash = new JazzCash();
+$jazzcash->setTransactionId($request->transactionId);
+$jazzcash->setAmount($request->amount);
+$jazzcash->setBillReference($request->billref);
+return $jazzcash->sendRefundRequest();
+
+```
+The sendRefundRequest method sends a request to the JazzCash API to initiate the refund process and returns the response from the API. The response will contain information about the success or failure of the refund request, including any relevant error messages.
+
+### Testing
+To test the payment gateway, you can use the sandbox mode by setting `JAZZCASH_PAYMENTMODE=sandbox` in your `.env` file. This will allow you to test the checkout process without actually processing any payments.
+
+To switch to production mode, set `JAZZCASH_PAYMENTMODE=production` in your `.env` file.
 
 #### Changelog
 Please see Changelog for more information what has changed recently.
