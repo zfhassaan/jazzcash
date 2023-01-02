@@ -67,7 +67,7 @@ class JazzCash
         $data['ppmpf_4'] = '';
         $data['ppmpf_5'] = '';
         $data['securehash'] = $this->HashArray($data);
-        return response()->json($this->renderPage($data));
+        return response($this->renderPage($data));
     }
 
     /**
@@ -101,7 +101,7 @@ class JazzCash
         $jazzcashForm[] = '<div id="header"><form action="' . $this->apiUrl . '" method="post" id="jazzcash-checkout">';
 
         foreach ($data as $key => $value) {
-            $jazzcashForm[] = '<input type="hidden" name="' . ($key) . '" value="' . ($value) . '" />';
+            $jazzcashForm[] = '<input type="text" name="' . ($key) . '" id="' . ($key) . '" value="' . ($value) . '" />';
         }
         $jazzcashForm[] = '<input type="submit" class="button paydast-submit" name="" value="Submit" />';
 
