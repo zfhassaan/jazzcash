@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <p align="center">
   <img src="logo_JazzCash.png" alt="JazzCash Payment Gateway" width="150"/><br/>
   <!-- <h3 align="center">Payfast</h3> -->
@@ -104,19 +105,6 @@ The index function is called and a new instance of the JazzCash class is created
 The sendRequest method is called on the JazzCash object. This method sends a request to the JazzCash API to initiate the checkout process and returns the response from the API as an HTML template which can be rendered on the web and mobile application. To hide or show fields, you can use CSS to control the field's visibility on the frontend.
 
 The response from the API is returned by the index function. This response can be used to display the hosted checkout form on your website or mobile app.
-
-### Refunds
-To initiate a refund, send a POST request with the following parameters:
-
-```php 
-$jazzcash = new JazzCash();
-$jazzcash->setTransactionId($request->transactionId);
-$jazzcash->setAmount($request->amount);
-$jazzcash->setBillReference($request->billref);
-return $jazzcash->sendRefundRequest();
-
-```
-The sendRefundRequest method sends a request to the JazzCash API to initiate the refund process and returns the response from the API. The response will contain information about the success or failure of the refund request, including any relevant error messages.
 
 ### Testing
 To test the payment gateway, you can use the sandbox mode by setting `JAZZCASH_PAYMENTMODE=sandbox` in your `.env` file. This will allow you to test the checkout process without actually processing any payments.
