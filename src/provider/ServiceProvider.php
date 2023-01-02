@@ -2,7 +2,7 @@
 
 namespace zfhassaan\jazzcash\provider;
 
-class JazzCashServiceProvider extends \Illuminate\Support\ServiceProvider
+class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /**
      * Bootstrap the application Services.
@@ -11,7 +11,7 @@ class JazzCashServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         if($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../../config/config.php'=>config_path('jazzcash.php'),
+                __DIR__.'/../../config/config.php'=>config_path('JazzCash.php'),
             ],'config');
         }
     }

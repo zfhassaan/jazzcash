@@ -8,7 +8,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "zfhassaan\\Jazzcash\\": "src/"
+            "zfhassaan\\jazzcash\\": "src/"
         }
     },
     "authors": [
@@ -20,10 +20,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "zfhassaan\\JazzCash\\provider\\JazzCashServiceProvider"
+                "zfhassaan\\jazzcash\\provider\\ServiceProvider"
             ],
             "aliases": {
-                "jazzcash": "zfhassaan\\JazzCash\\facade\\JazzCashFacade"
+                "jazzcash": "zfhassaan\\jazzcash\\facade\\JazzcashFacade"
             }
         }
     },

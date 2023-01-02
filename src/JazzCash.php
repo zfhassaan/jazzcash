@@ -41,12 +41,13 @@ class JazzCash
         $this->merchant_id = config('jazzcash.merchant_id');
         $this->return_url = config('jazzcash.return_url');
         $this->password = config('jazzcash.password');
-        $this->timezone = date_default_timezone_get('Asia/Karachi');
+        $this->timezone = date_default_timezone_set('Asia/Karachi');
+
     }
 
     public function sendRequest()
     {
-        $data['amount'] = $this->getAmount();
+        $data['amount'] = $this->getAmount() * 100;
         $data['billRef'] = $this->getBillRefernce();
         $data['description'] = $this->getProductDescription();
         $data['isRegisteredCustomer'] = "No";
@@ -65,11 +66,49 @@ class JazzCash
         $data['ppmpf_3'] = '';
         $data['ppmpf_4'] = '';
         $data['ppmpf_5'] = '';
-
-        dd($data);
+        $data['securehash'] = $this->HashArray($data);
+        return $this->renderPage($data);
     }
 
+    /**
+     * Create Hash Array
+     */
 
+    public function HashArray($data)
+    {
+        $result = [];
+        foreach ($data as $key => $value) {
+            $result[] = $value;
+        }
+
+        $resultString = implode('', $result);
+        $SortedArray = '';
+        for($i = 0; $i < strlen($resultString); $i++) {
+            if ($resultString[$i] != 'undefined' and $resultString[$i] != null and $resultString[$i] != "") {
+                $SortedArray .= "&" . $resultString[$i];
+            }
+        }
+
+        $key = implode('', $result); // Convert the $result array into a string
+        return hash_hmac('sha256', $SortedArray, $key);
+    }
+
+    /**
+     * Generate the HTML to render in Mobile Application to send Request:
+     *
+     */
+    public function renderPage($data) {
+        $jazzcashForm[] = '<div id="header"><form action="' . $this->apiUrl . '" method="post" id="jazzcash-checkout">';
+
+        foreach ($data as $key => $value) {
+            $jazzcashForm[] = '<input type="hidden" name="' . ($key) . '" value="' . ($value) . '" />';
+        }
+        $jazzcashForm[] = '<input type="submit" class="button paydast-submit" name="" value="Submit" />';
+
+        $jazzcashForm[] = '</form></div>';
+
+        return implode('', $jazzcashForm);
+    }
     /**
      * Set Amount for Orders
      *
@@ -113,6 +152,7 @@ class JazzCash
      */
     public function setProductDescription($description): static
     {
+
         $this->productdescription = $description;
         return $this;
     }
