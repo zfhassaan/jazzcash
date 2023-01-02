@@ -14,7 +14,7 @@ This Package only hosted checkout process. There's no Subscription option enable
 
 
 #### About
-JazzCash is a leading payment gateway in Pakistan that allows businesses to securely accept online payments from their customers. With fast and reliable transaction processing, advanced fraud protection, and a user-friendly interface, JazzCash makes it easy for merchants to grow their online sales. Whether you're a small business owner, e-commerce store owner, or a developer looking to integrate a payment gateway into your website or mobile app, JazzCash has a solution that fits your needs.
+Looking for a secure and reliable payment gateway in Pakistan? JazzCash offers fast transaction processing, advanced fraud protection, and a user-friendly interface for businesses of all sizes. As a small business owner, e-commerce store owner, or developer, you can find a solution that fits your needs with JazzCash. Our detailed guide will show you how to easily integrate with the JazzCash Hosted Checkout for hassle-free online payments from your customers. Trust JazzCash to help you grow your online sales and reach your business goals.
 
 This document contains detailed explanation about how to integrate with Jazzcash Hosted Checkout.
 <small>v1.0.0</small>
