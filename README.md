@@ -110,9 +110,10 @@ The index function is called and a new instance of the JazzCash class is created
 
 The setAmount, setBillReference, and setProductDescription methods are called on the JazzCash object, passing in the amount, billref, and productDescription values from the request as arguments. These methods set the corresponding properties of the JazzCash object to the specified values.
 
-The sendRequest method is called on the JazzCash object. This method sends a request to the JazzCash API to initiate the checkout process and returns the response from the API.
+The sendRequest method is called on the JazzCash object. This method sends a request to the JazzCash API to initiate the checkout process and returns the response from the API as a HTML template which can be rendered on the web and mobile application, to hide or show fields you can use css to control the fields visibility on frontend.
 
 The response from the API is returned by the index function. This response can be used to display the hosted checkout form or process the transaction in some other way.
+
 
 #### Changelog
 Please see Changelog for more information what has changed recently.
