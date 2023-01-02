@@ -47,7 +47,7 @@ class JazzCash
 
     public function sendRequest()
     {
-        $data['amount'] = $this->getAmount() * 100;
+        $data['amount'] = $this->getAmount() * 100;  //Last two digits will be considered as Decimal
         $data['billRef'] = $this->getBillRefernce();
         $data['description'] = $this->getProductDescription();
         $data['isRegisteredCustomer'] = "No";
@@ -67,7 +67,7 @@ class JazzCash
         $data['ppmpf_4'] = '';
         $data['ppmpf_5'] = '';
         $data['securehash'] = $this->HashArray($data);
-        return $this->renderPage($data);
+        return response()->json($this->renderPage($data));
     }
 
     /**
