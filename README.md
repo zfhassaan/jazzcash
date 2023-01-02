@@ -6,6 +6,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/zfhassaan/jazzcash.svg?style=flat-square)](https://packagist.org/packages/zfhassaan/jazzcash)
 [![Total Downloads](https://img.shields.io/packagist/dt/zfhassaan/jazzcash.svg?style=flat-square)](https://packagist.org/packages/zfhassaan/jazzcash)
 
+
 <h4> Disclaimer </h4>
 This is unofficial Jazzcash API Payment Gateway. This repository  is only created to help developers in streamlining the integration process. You can Review the Official Payment Gateway <a href="https://sandbox.jazzcash.com.pk/Sandbox/" >here.</a> 
 
@@ -13,6 +14,8 @@ This Package only hosted checkout process. There's no Subscription option enable
 
 
 #### About
+JazzCash is a leading payment gateway in Pakistan that allows businesses to securely accept online payments from their customers. With fast and reliable transaction processing, advanced fraud protection, and a user-friendly interface, JazzCash makes it easy for merchants to grow their online sales. Whether you're a small business owner, e-commerce store owner, or a developer looking to integrate a payment gateway into your website or mobile app, JazzCash has a solution that fits your needs.
+
 This document contains detailed explanation about how to integrate with Jazzcash Hosted Checkout.
 <small>v1.0.0</small>
 
