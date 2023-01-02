@@ -4,6 +4,7 @@
 namespace Tests\Unit;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,6 +24,6 @@ class sendRequest extends TestCase
         $jazzcash->setBillReference('bill123');
         $jazzcash->setProductDescription('Test product');
         $response = $jazzcash->sendRequest();
-        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
     }
 }
