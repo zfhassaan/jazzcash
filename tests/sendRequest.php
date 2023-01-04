@@ -1,7 +1,8 @@
 <?php
 
 
-namespace zfhassaan\JazzCash\Tests;
+namespace Tests\Unit;
+
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;

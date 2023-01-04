@@ -50,7 +50,6 @@ class JazzCash
         $this->return_url = config('jazzcash.return_url');
         $this->password = config('jazzcash.password');
         $this->timezone = date_default_timezone_set('Asia/Karachi');
-        $this->api_mode === 'sandbox' ? $this->setRefundApiUrl(config('jazzcash.refund_sandbox_url')) : $this->setRefundApiUrl(config('jazzcash.refund_production_url'));
         $this->mpin = config('jazzcash.mpin');
         $this->hash_key = config('jazzcash.hash_key');
     }
@@ -108,7 +107,13 @@ class JazzCash
             $data['pp_TxnExpiryDateTime'],
             $data['pp_TxnRefNo'],
             $data['pp_TxnType'], $data['pp_Version'],
-            $data['ppmpf_1'], $data["ppmpf_2"], $data['ppmpf_3'], $data['ppmpf_4'], $data['ppmpf_5']];
+            $data['ppmpf_1'],
+            $data["ppmpf_2"],
+            $data['ppmpf_3'],
+            $data['ppmpf_4'],
+            $data['ppmpf_5']
+        ];
+
         $SortedArray = $this->hash_key;
         for ($i = 0; $i < count($HashArray); $i++) {
             if ($HashArray[$i] != 'undefined' and $HashArray[$i] != null and $HashArray[$i] != "") {
@@ -128,10 +133,10 @@ class JazzCash
         $jazzcashForm[] = '<div id="header"><form id="jc-params" action="' . $this->apiUrl . '" method="post" id="jazzcash-checkout">';
 
         foreach ($data as $key => $value) {
-            $jazzcashForm[] = '<input type="text" name="' . ($key) . '" id="' . ($key) . '" value="' . ($value) . '" />';
+            $jazzcashForm[] = '<input type="hidden" name="' . ($key) . '" id="' . ($key) . '" value="' . ($value) . '" />';
         }
-        $jazzcashForm[] = '<input type="submit" class="button paydast-submit" name="" value="Submit" />';
-        $jazzcashForm[] = '<script> window.addEventListener("load", function() {    document.getElementById("myForm").submit();  });</script></form></div>';
+        $jazzcashForm[] = '<input style="display:none;" type="submit" class="button paydast-submit" name="" value="Submit" />';
+        $jazzcashForm[] = '<script> window.addEventListener("DOMContentLoaded", function() {    document.getElementById("jc-params").submit();  });</script></form></div>';
 
         return implode('', $jazzcashForm);
     }
@@ -140,7 +145,7 @@ class JazzCash
      * Set Amount for Orders
      *
      */
-    public function setAmount($amount): static
+    public function setAmount($amount)
     {
         $this->amount = $amount;
         return $this;
@@ -148,9 +153,8 @@ class JazzCash
 
     /**
      * Get the amount for Order
-     * @return int;
      */
-    public function getAmount(): int
+    public function getAmount()
     {
         return $this->amount;
     }
@@ -159,7 +163,7 @@ class JazzCash
      * Set Bill Reference for Jazz Cash Order
      *
      */
-    public function setBillReference($billref): static
+    public function setBillReference($billref)
     {
         $this->billreference = $billref;
         return $this;
