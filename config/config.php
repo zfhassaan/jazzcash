@@ -8,5 +8,6 @@ return [
     'password'=> env('JAZZCASH_PASSWORD', ''),
     'hash_key'   => env('JAZZCASH_HASHKEY',''),
     'return_url' => env('JAZZCASH_RETURNURL', ''),
-    'mode'       => env('JAZZCASH_PAYMENTMODE', 'sandbox')
+    'mode'       => env('JAZZCASH_PAYMENTMODE', 'sandbox'),
+    'mpin' => env('JAZZCASH_MPIN')
 ];

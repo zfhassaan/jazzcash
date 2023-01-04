@@ -19,7 +19,7 @@ class JazzCash
     protected string $return_url;
     protected string $password;
     protected string $timezone;
-
+    protected string $hash_key;
     //    Post Fields
     private int $amount;
     private string $billreference;
@@ -52,6 +52,7 @@ class JazzCash
         $this->timezone = date_default_timezone_set('Asia/Karachi');
         $this->api_mode === 'sandbox' ? $this->setRefundApiUrl(config('jazzcash.refund_sandbox_url')) : $this->setRefundApiUrl(config('jazzcash.refund_production_url'));
         $this->mpin = config('jazzcash.mpin');
+        $this->hash_key = config('jazzcash.hash_key');
     }
 
     /**
@@ -60,89 +61,62 @@ class JazzCash
      */
     public function sendRequest(): Response|Application|ResponseFactory
     {
-        $data['amount'] = $this->getAmount() * 100;  //Last two digits will be considered as Decimal
-        $data['billRef'] = $this->getBillRefernce();
-        $data['description'] = $this->getProductDescription();
-        $data['isRegisteredCustomer'] = "No";
-        $data['Language'] = "EN";
-        $data['TxnCurrency'] = 'PKR';
-        $data['TxnDateTime'] = date('YmdHis');
-        $data['TxnExpiryDateTime'] = date('YmdHis', strtotime('+1 Days'));
-        $data['TxnRefNumber'] = "TR" . date('YmdHis') . mt_rand(10, 100); // You can customize it (only Max 20 Alpha-Numeric characters)
-        $data['TxnType'] = '';
-        $data['Version'] = '2.0';
-        $data['SubMerchantID'] = '';
-        $data['BankID'] = '';
-        $data['ProductID'] = '';
+        $data['pp_Version'] = '2.0';
+        $data['pp_TxnType'] = '';
+        $data['pp_Language'] = "EN";
+        $data['pp_MerchantID'] = $this->merchant_id;
+        $data['pp_SubMerchantID'] = '';
+        $data['pp_Password'] = $this->password;
+        $data['pp_TxnRefNo'] = "TR" . date('YmdHis') . mt_rand(10, 100); // You can customize it (only Max 20 Alpha-Numeric characters)
+        $data['pp_Amount'] = $this->getAmount() * 100;  //Last two digits will be considered as Decimal
+        $data['pp_TxnCurrency'] = 'PKR';
+        $data['pp_TxnDateTime'] = date('YmdHis');
+        $data['pp_BillReference'] = $this->getBillRefernce();
+        $data['pp_Description'] = trim($this->getProductDescription(),"'");
+        $data['pp_IsRegisteredCustomer'] = "No";
+        $data['pp_BankID'] = '';
+        $data['pp_ProductID'] = '';
+        $data['pp_TxnExpiryDateTime'] = date('YmdHis', strtotime('+1 Days'));
+        $data['pp_ReturnURL'] = $this->return_url;
         $data['ppmpf_1'] = '';
         $data['ppmpf_2'] = '';
         $data['ppmpf_3'] = '';
         $data['ppmpf_4'] = '';
         $data['ppmpf_5'] = '';
-        $data['securehash'] = $this->HashArray($data);
+        $data['pp_SecureHash'] = $this->HashArray($data);
         return response($this->renderPage($data));
     }
 
-    /**
-     * Send Refund Request...
-     *
-     */
-    public function RequestRefund($request): JsonResponse
-    {
-        $data['pp_Amount'] = $request['amount'];
-        $data['pp_MerchantID'] = $this->merchant_id;
-        $data['pp_MerchantMPIN'] = $this->mpin;
-        $data['pp_Password'] = $this->password;
-        $data['pp_TxnCurrency'] = 'PKR';
-        $data['pp_TxnRefNo'] = $request['txnref'];
-        $data['pp_SecureHash'] = $this->RefundHashArray($data);
-//        $data['pp_SecureHash'] = "2C595361C2DA0E502D18BFBAA92CF4740330215E5E8AD0CF4489A64E7400B117";
-        $url = $this->getRefundApiUrl();
-        $refund = new RefundPayment();
-        $result = $refund->sendRequest($url, $data);
-        return response()->json($result);
-    }
-
-    /**
-     * Refund Hash Array.
-     */
-    public function RefundHashArray($data)
-    {
-        $result = [];
-        foreach($data as $key => $value)
-        {
-            $result[] = $value;
-        }
-        $resultString = '';
-        foreach($result as $key => $value)
-        {
-            $resultString .= $value.'&';
-        }
-        $SortedArray = substr($resultString,0,-1);
-        $key = implode('', $result); // Convert the $result array into a string
-        return hash_hmac('sha256', $SortedArray, $key);
-    }
     /**
      * Create Hash Array
      */
     public function HashArray($data): string
     {
-        $result = [];
-        foreach ($data as $key => $value) {
-            $result[] = $value;
-        }
-        $resultString = implode('', $result);
-
-        $SortedArray = '';
-
-        for ($i = 0; $i < strlen($resultString); $i++) {
-            if ($resultString[$i] != 'undefined' and $resultString[$i] != null and $resultString[$i] != "") {
-                $SortedArray .= "&" . $resultString[$i];
+        $HashArray = [
+            $data['pp_Amount'],
+            $data['pp_BankID'],
+            $data['pp_BillReference'],
+            $data['pp_Description'],
+            $data['pp_IsRegisteredCustomer'],
+            $data['pp_Language'],
+            $data['pp_MerchantID'],
+            $data['pp_Password'],
+            $data['pp_ProductID'],
+            $data['pp_ReturnURL'],
+            $data['pp_TxnCurrency'],
+            $data['pp_TxnDateTime'],
+            $data['pp_TxnExpiryDateTime'],
+            $data['pp_TxnRefNo'],
+            $data['pp_TxnType'], $data['pp_Version'],
+            $data['ppmpf_1'], $data["ppmpf_2"], $data['ppmpf_3'], $data['ppmpf_4'], $data['ppmpf_5']];
+        $SortedArray = $this->hash_key;
+        for ($i = 0; $i < count($HashArray); $i++) {
+            if ($HashArray[$i] != 'undefined' and $HashArray[$i] != null and $HashArray[$i] != "") {
+                $SortedArray .= "&" . $HashArray[$i];
             }
         }
 
-        $key = implode('', $result); // Convert the $result array into a string
-        return hash_hmac('sha256', $SortedArray, $key);
+        return hash_hmac('sha256', $SortedArray, $this->hash_key);
     }
 
     /**
@@ -217,7 +191,7 @@ class JazzCash
      */
     public function getProductDescription()
     {
-        return $this->billreference;
+        return $this->productdescription;
     }
 
     /**
