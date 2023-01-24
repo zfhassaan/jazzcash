@@ -53,7 +53,7 @@ JAZZCASH_RETURNURL=
 ```
 
 #### configuration
-In your `app/config.php` file, add the following line to the providers array:
+In your `config/app.php` file, add the following line to the providers array:
 
 ```php 
     /*
