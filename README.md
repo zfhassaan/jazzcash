@@ -11,7 +11,7 @@
 
 
 <h4> Disclaimer </h4>
-This is unofficial Jazzcash API Payment Gateway. This repository  is only created to help developers in streamlining the integration process. You can Review the Official Payment Gateway <a href="https://sandbox.jazzcash.com.pk/Sandbox/" >here.</a> This Package only hosted checkout process. There's no Subscription option enabled yet.
+This is unofficial Jazzcash API Payment Gateway. This repository  is only created to help developers in streamlining the integration process. You can Review the Official Payment Gateway <a href="https://sandbox.jazzcash.com.pk/Sandbox/" >here.</a> This Package only processes hosted checkout process. There's no Subscription option enabled yet.
 
 
 #### About
