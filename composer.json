@@ -4,7 +4,7 @@
     "type": "library",
     "require": {
         "php": "^8.1",
-        "guzzle/guzzle": "^7.5"
+        "guzzle/guzzle": "^3.9"
     },
     "license": "MIT",
     "autoload": {
