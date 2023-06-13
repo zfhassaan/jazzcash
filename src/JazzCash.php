@@ -46,7 +46,7 @@ class JazzCash extends Payment
      */
     public function renderPage($data): string
     {
-        $jazzcashForm[] = '<div id="header"><form id="jc-params" action="' . $this->apiUrl . '" method="post" id="jazzcash-checkout">';
+        $jazzcashForm[] = '<div id="header"><form id="jc-params" action="' . $this->apiUrl . '" method="post">';
 
         foreach ($data as $key => $value) {
             $jazzcashForm[] = '<input type="hidden" name="' . ($key) . '" id="' . ($key) . '" value="' . ($value) . '" />';
