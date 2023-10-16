@@ -58,7 +58,7 @@ In your `config/app.php` file, add the following line to the providers array:
     * Package Service Providers...
     */
 
-    \zfhassaan\jazzcash\provider\ServiceProvider::class,
+    \zfhassaan\jazzcash\provider\ServiceProvider as JazzcashServiceProvider;
 ```
 
 
@@ -66,7 +66,7 @@ In the `aliases` array of the same file, add the following line:
 
 ```php 
   'aliases' => Facade::defaultAliases()->merge([
-        'Jazzcash' => \zfhassaan\jazzcash\facade\JazzcashFacade::class,
+        'Jazzcash' => \Zfhassaan\Jazzcash\Facade\JazzcashFacade::class,
     ])->toArray(),
 ```
 #### Publish Vendor:
