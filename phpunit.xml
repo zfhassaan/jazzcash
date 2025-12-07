@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         cacheDirectory=".phpunit.cache"
+         executionOrder="depends,defects"
+         beStrictAboutOutputDuringTests="true"
+         failOnRisky="true"
+         failOnWarning="true">
+    <testsuites>
+        <testsuite name="JazzCash Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="JAZZCASH_PAYMENTMODE" value="sandbox"/>
+        <env name="JAZZCASH_MERCHANTID" value="test_merchant_id"/>
+        <env name="JAZZCASH_PASSWORD" value="test_password"/>
+        <env name="JAZZCASH_HASHKEY" value="test_hash_key"/>
+        <env name="JAZZCASH_RETURNURL" value="https://example.com/callback"/>
+        <env name="JAZZCASH_SANDBOX_URL" value="https://sandbox.jazzcash.com.pk"/>
+        <env name="JAZZCASH_PRODUCTION_URL" value="https://jazzcash.com.pk"/>
+    </php>
+</phpunit>
+
