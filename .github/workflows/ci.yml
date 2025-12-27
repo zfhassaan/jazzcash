@@ -1,0 +1,82 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test:
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Laravel 10 - supports PHP 8.1, 8.2
+          - php: '8.1'
+            laravel: '^10.0'
+            testbench: '^8.0'
+          - php: '8.2'
+            laravel: '^10.0'
+            testbench: '^8.0'
+          
+          # Laravel 11 - supports PHP 8.2, 8.3
+          - php: '8.2'
+            laravel: '^11.0'
+            testbench: '^9.0'
+          - php: '8.3'
+            laravel: '^11.0'
+            testbench: '^9.0'
+          
+          # Laravel 12 - supports PHP 8.2, 8.3
+          - php: '8.2'
+            laravel: '^12.0'
+            testbench: '^10.0'
+          - php: '8.3'
+            laravel: '^12.0'
+            testbench: '^10.0'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, bcmath, pdo, pdo_mysql, xml, curl, json, zip
+          coverage: none
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-php-${{ matrix.php }}-laravel-${{ matrix.laravel }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-${{ matrix.php }}-laravel-${{ matrix.laravel }}-composer-
+
+      - name: Install Composer dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-update --no-interaction
+          composer update --prefer-dist --no-progress --no-interaction --optimize-autoloader
+
+      - name: Run tests
+        run: vendor/bin/phpunit --testdox
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-php-${{ matrix.php }}-laravel-${{ matrix.laravel }}
+          path: .phpunit.cache/
+          retention-days: 7
+
