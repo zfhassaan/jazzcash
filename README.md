@@ -8,6 +8,7 @@
 [![MIT Licensed](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/zfhassaan/jazzcash.svg?style=flat-square)](https://packagist.org/packages/zfhassaan/jazzcash)
 [![Tests](https://img.shields.io/github/actions/workflow/status/zfhassaan/jazzcash/ci.yml?label=tests&style=flat-square)](https://github.com/zfhassaan/jazzcash/actions)
+[![Laravel](https://img.shields.io/badge/Laravel-10.x%20%7C%2011.x%20%7C%2012.x-FF2D20?style=flat-square&logo=laravel)](https://laravel.com)
 
 <h4> Disclaimer </h4>
 This is unofficial Jazzcash API Payment Gateway. This repository  is only created to help developers in streamlining the integration process. You can Review the Official Payment Gateway <a href="https://sandbox.jazzcash.com.pk/Sandbox/" >here.</a> This Package only processes hosted checkout process. There's no Subscription option enabled yet.
