@@ -74,11 +74,21 @@ class PaymentFlowTest extends TestCase
         $response = $jazzcash->sendRequest();
         $content = $response->getContent();
 
-        // Extract hash from HTML
-        preg_match('/name="pp_SecureHash" value="([^"]+)"/', $content, $matches);
-        $this->assertNotEmpty($matches[1] ?? null, 'Secure hash should be present');
-        $hash = $matches[1] ?? '';
-        $this->assertEquals(64, strlen($hash), 'Hash should be 64 characters (SHA256)');
+        // Check that pp_SecureHash field exists in the HTML
+        $this->assertStringContainsString('pp_SecureHash', $content, 'Secure hash field should be present in HTML');
+        
+        // Extract hash from HTML - handle both escaped and unescaped values
+        // The hash is a hex string, so htmlspecialchars shouldn't change it, but let's be safe
+        if (preg_match('/name="pp_SecureHash"[^>]*value="([^"]+)"/', $content, $matches)) {
+            $hash = $matches[1];
+            $this->assertNotEmpty($hash, 'Secure hash value should not be empty');
+            $this->assertEquals(64, strlen($hash), 'Hash should be 64 characters (SHA256)');
+        } else {
+            // Try alternative pattern in case of different HTML structure
+            $this->assertStringContainsString('id="pp_SecureHash"', $content, 'Secure hash input field should exist');
+            // If we can't extract with regex, at least verify the field exists
+            $this->fail('Could not extract hash value from HTML, but field exists');
+        }
     }
 }
 

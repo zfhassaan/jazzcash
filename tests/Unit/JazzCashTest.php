@@ -109,9 +109,13 @@ class JazzCashTest extends TestCase
 
         $html = $this->jazzcash->renderPage($data);
 
-        $this->assertStringNotContainsString('<script>', $html);
+        // Check that user-provided script tag is escaped (not the auto-submit script)
+        $this->assertStringNotContainsString('value="Test & Description <script>alert("xss")</script>"', $html);
         $this->assertStringContainsString('&amp;', $html);
         $this->assertStringContainsString('&lt;script&gt;', $html);
+        $this->assertStringContainsString('&quot;xss&quot;', $html);
+        // Verify the auto-submit script is still present (it should be)
+        $this->assertStringContainsString('window.addEventListener("DOMContentLoaded"', $html);
     }
 
     public function test_render_page_includes_auto_submit_script(): void

@@ -53,7 +53,7 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageAliases($app): array
     {
         return [
-            'Jazzcash' => \Zfhassaan\JazzCash\Facade\JazzcashFacade::class,
+            'Jazzcash' => \zfhassaan\JazzCash\Facade\JazzcashFacade::class,
         ];
     }
 }

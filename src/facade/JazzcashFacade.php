@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zfhassaan\JazzCash\Facade;
+namespace zfhassaan\JazzCash\Facade;
 
 use Illuminate\Support\Facades\Facade;
 

@@ -136,7 +136,14 @@ class PaymentTest extends TestCase
         $reflection = new \ReflectionClass($this->payment);
         $method = $reflection->getMethod('validatePaymentData');
         $method->setAccessible(true);
-        $method->invoke($this->payment);
+        
+        // Verify no exception is thrown
+        try {
+            $method->invoke($this->payment);
+            $this->assertTrue(true, 'Validation passed without throwing exception');
+        } catch (\InvalidArgumentException $e) {
+            $this->fail('Validation should not throw exception for valid data: ' . $e->getMessage());
+        }
     }
 
     public function test_validate_payment_data_throws_for_zero_amount(): void

@@ -35,7 +35,7 @@
                 "zfhassaan\\jazzcash\\provider\\ServiceProvider"
             ],
             "aliases": {
-                "jazzcash": "Zfhassaan\\JazzCash\\Facade\\JazzcashFacade"
+                "jazzcash": "zfhassaan\\JazzCash\\Facade\\JazzcashFacade"
             }
         }
     },
