@@ -43,8 +43,11 @@ rm -rf vendor
 
 composer config platform.php "$PLATFORM_PHP"
 
+# audit.block-insecure is false in composer.json so Laravel 8/9 can install in CI.
+
+composer require --no-update "illuminate/support:${LARAVEL_VER}"
+
 composer require --dev --no-update \
-  "illuminate/support:${LARAVEL_VER}" \
   "orchestra/testbench:${TESTBENCH}" \
   "phpunit/phpunit:${PHPUNIT_CONSTRAINT}"
 
