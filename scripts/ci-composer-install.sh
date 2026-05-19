@@ -38,12 +38,24 @@ case "$PHP_VER" in
   *)       PHPUNIT_CONSTRAINT="^10.5|^11.5|^12.0" ;;
 esac
 
-rm -f composer.lock
+rm -f composer.lock composer.local.json
 rm -rf vendor
 
-composer config platform.php "$PLATFORM_PHP"
+# Platform + audit overrides for this matrix row (not committed).
+cat > composer.local.json <<EOF
+{
+    "config": {
+        "platform": {
+            "php": "${PLATFORM_PHP}"
+        },
+        "audit": {
+            "block-insecure": false
+        }
+    }
+}
+EOF
 
-# audit.block-insecure is false in composer.json so Laravel 8/9 can install in CI.
+# audit.block-insecure is also false in composer.json for Laravel 8/9 CI jobs.
 
 composer require --no-update "illuminate/support:${LARAVEL_VER}"
 
