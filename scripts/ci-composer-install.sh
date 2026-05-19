@@ -41,9 +41,16 @@ esac
 rm -f composer.lock composer.local.json
 rm -rf vendor
 
-# Platform + audit overrides for this matrix row (not committed).
+# Matrix-specific constraints (merged with composer.json; not committed).
 cat > composer.local.json <<EOF
 {
+    "require": {
+        "illuminate/support": "${LARAVEL_VER}"
+    },
+    "require-dev": {
+        "orchestra/testbench": "${TESTBENCH}",
+        "phpunit/phpunit": "${PHPUNIT_CONSTRAINT}"
+    },
     "config": {
         "platform": {
             "php": "${PLATFORM_PHP}"
@@ -55,11 +62,7 @@ cat > composer.local.json <<EOF
 }
 EOF
 
-# audit.block-insecure is also false in composer.json for Laravel 8/9 CI jobs.
-
-composer update --prefer-dist --optimize-autoloader --no-progress --ansi --no-interaction \
-  "illuminate/support:${LARAVEL_VER}" \
-  "orchestra/testbench:${TESTBENCH}" \
-  "phpunit/phpunit:${PHPUNIT_CONSTRAINT}"
+# Full update required when composer.lock is absent (no partial package updates).
+composer update --prefer-dist --optimize-autoloader --no-progress --ansi --no-interaction
 
 composer check-platform-reqs
