@@ -57,12 +57,9 @@ EOF
 
 # audit.block-insecure is also false in composer.json for Laravel 8/9 CI jobs.
 
-composer require --no-update "illuminate/support:${LARAVEL_VER}"
-
-composer require --dev --no-update \
+composer update --prefer-dist --optimize-autoloader --no-progress --ansi --no-interaction \
+  "illuminate/support:${LARAVEL_VER}" \
   "orchestra/testbench:${TESTBENCH}" \
   "phpunit/phpunit:${PHPUNIT_CONSTRAINT}"
-
-composer update --prefer-dist --optimize-autoloader --no-progress --ansi --no-interaction
 
 composer check-platform-reqs
