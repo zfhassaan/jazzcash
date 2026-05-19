@@ -37,7 +37,7 @@ abstract class TestCase extends BaseTestCase
      * @param \Illuminate\Foundation\Application $app
      * @return array<int, class-string>
      */
-    protected function getPackageProviders($app): array
+    protected function getPackageProviders($app)
     {
         return [
             ServiceProvider::class,
@@ -50,7 +50,7 @@ abstract class TestCase extends BaseTestCase
      * @param \Illuminate\Foundation\Application $app
      * @return array<string, class-string>
      */
-    protected function getPackageAliases($app): array
+    protected function getPackageAliases($app)
     {
         return [
             'Jazzcash' => \zfhassaan\JazzCash\Facade\JazzcashFacade::class,

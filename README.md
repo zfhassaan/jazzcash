@@ -8,7 +8,8 @@
 [![MIT Licensed](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/zfhassaan/jazzcash.svg?style=flat-square)](https://packagist.org/packages/zfhassaan/jazzcash)
 [![Tests](https://img.shields.io/github/actions/workflow/status/zfhassaan/jazzcash/ci.yml?label=tests&style=flat-square)](https://github.com/zfhassaan/jazzcash/actions)
-[![Laravel](https://img.shields.io/badge/Laravel-10.x%20%7C%2011.x%20%7C%2012.x-FF2D20?style=flat-square&logo=laravel)](https://laravel.com)
+[![Laravel](https://img.shields.io/badge/Laravel-8.x%20%E2%80%93%2013.x-FF2D20?style=flat-square&logo=laravel)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-7.3%20%E2%80%93%208.5-777BB4?style=flat-square&logo=php)](https://php.net)
 
 <h4> Disclaimer </h4>
 This is unofficial Jazzcash API Payment Gateway. This repository  is only created to help developers in streamlining the integration process. You can Review the Official Payment Gateway <a href="https://sandbox.jazzcash.com.pk/Sandbox/" >here.</a> This Package only processes hosted checkout process. There's no Subscription option enabled yet.
@@ -29,6 +30,15 @@ This package only contains the hosted checkout process. There are no API endpoin
 
 #### Integration Prerequisites
 Merchants must be registered with JazzCash prior to integration. After signing up for a JazzCash account, the merchant will receive the following unique values to operate: `Merchant_ID`, `Password`, `Hashkey`, `Sandbox URL`, and `Production URL`. These keys are used to get a one-time authentication token, which
+
+#### Requirements
+
+| Component | Supported versions |
+|-----------|------------------|
+| PHP | 7.3 – 8.5 |
+| Laravel | 8.x – 13.x |
+
+Laravel 8–12 use package auto-discovery. On Laravel 8 you can still register the provider and facade manually (see [configuration](#configuration)).
 
 #### Installation
 You can install the package via composer

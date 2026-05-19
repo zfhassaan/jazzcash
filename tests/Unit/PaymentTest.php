@@ -11,7 +11,8 @@ use zfhassaan\jazzcash\Payment;
 
 class PaymentTest extends TestCase
 {
-    protected Payment $payment;
+    /** @var Payment */
+    protected $payment;
 
     protected function setUp(): void
     {

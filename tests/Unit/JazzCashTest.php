@@ -10,7 +10,8 @@ use zfhassaan\JazzCash\JazzCash;
 
 class JazzCashTest extends TestCase
 {
-    protected JazzCash $jazzcash;
+    /** @var JazzCash */
+    protected $jazzcash;
 
     protected function setUp(): void
     {

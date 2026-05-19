@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace zfhassaan\JazzCash;
 
+use InvalidArgumentException;
 use zfhassaan\JazzCash\Constants\JazzCashConstants;
 use zfhassaan\jazzcash\Payment;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Http\Response;
-use InvalidArgumentException;
 
 /**
  * JazzCash Payment Gateway Main Class
@@ -21,12 +18,11 @@ class JazzCash extends Payment
     /**
      * Send payment request to JazzCash
      *
-     * @return Response|Application|ResponseFactory
+     * @return \Illuminate\Http\Response|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
      * @throws InvalidArgumentException If payment data is invalid
      */
-    public function sendRequest(): Response|Application|ResponseFactory
+    public function sendRequest()
     {
-        // Validate payment data before proceeding
         $this->validatePaymentData();
 
         $data = $this->buildPaymentData();
@@ -50,7 +46,7 @@ class JazzCash extends Payment
         $data['pp_SubMerchantID'] = '';
         $data['pp_Password'] = $this->password;
         $data['pp_TxnRefNo'] = $this->generateTransactionReference();
-        $data['pp_Amount'] = (int)($this->getAmount() * 100); // Last two digits will be considered as Decimal
+        $data['pp_Amount'] = (int) ($this->getAmount() * 100);
         $data['pp_TxnCurrency'] = JazzCashConstants::CURRENCY;
         $data['pp_TxnDateTime'] = $this->getTransactionDateTime();
         $data['pp_BillReference'] = $this->getBillReference();
@@ -76,7 +72,7 @@ class JazzCash extends Payment
      */
     protected function generateTransactionReference(): string
     {
-        return "TR" . date('YmdHis') . mt_rand(10, 100);
+        return 'TR' . date('YmdHis') . mt_rand(10, 100);
     }
 
     /**

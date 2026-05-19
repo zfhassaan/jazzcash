@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace zfhassaan\jazzcash;
 
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -17,23 +12,43 @@ use RuntimeException;
  *
  * Handles configuration, hash generation, and payment data management.
  */
-class Payment 
+class Payment
 {
+    /** @var string */
+    protected $api_mode;
 
-    protected string $api_mode;
-    protected string $apiUrl;
-    protected string $merchant_id;
-    protected string $return_url;
-    protected string $password;
-    protected string $timezone;
-    protected string $hash_key;
-    //    Post Fields
-    private float|int $amount = 0;
-    private string $billreference = '';
-    private string $productdescription = '';
-    private string $mpin = '';
-    // Refund URL
-    protected string $refundURL = '';
+    /** @var string */
+    protected $apiUrl;
+
+    /** @var string */
+    protected $merchant_id;
+
+    /** @var string */
+    protected $return_url;
+
+    /** @var string */
+    protected $password;
+
+    /** @var string */
+    protected $timezone;
+
+    /** @var string */
+    protected $hash_key;
+
+    /** @var float|int */
+    private $amount = 0;
+
+    /** @var string */
+    private $billreference = '';
+
+    /** @var string */
+    private $productdescription = '';
+
+    /** @var string */
+    private $mpin = '';
+
+    /** @var string */
+    protected $refundURL = '';
 
     /**
      * Constructor for JazzCash Payment Gateway
@@ -42,7 +57,6 @@ class Payment
     {
         $this->initConfig();
     }
-
 
     /**
      * Initialize Config Values
@@ -53,8 +67,8 @@ class Payment
     public function initConfig(): void
     {
         $this->api_mode = config('jazzcash.mode', 'sandbox');
-        $this->api_mode === 'sandbox' 
-            ? $this->setApiUrl(config('jazzcash.sandbox_api_url', '')) 
+        $this->api_mode === 'sandbox'
+            ? $this->setApiUrl(config('jazzcash.sandbox_api_url', ''))
             : $this->setApiUrl(config('jazzcash.api_url', ''));
         $this->merchant_id = config('jazzcash.merchant_id', '');
         $this->return_url = config('jazzcash.return_url', '');
@@ -62,8 +76,7 @@ class Payment
         $this->timezone = config('jazzcash.timezone', 'Asia/Karachi');
         $this->mpin = config('jazzcash.mpin', '');
         $this->hash_key = config('jazzcash.hash_key', '');
-        
-        // Validate configuration (only if not in test mode)
+
         if (!app()->runningUnitTests()) {
             $this->validateConfig();
         }
@@ -91,7 +104,7 @@ class Payment
         }
 
         if (empty($this->apiUrl)) {
-            throw new RuntimeException("JazzCash API URL is not configured. Please set JAZZCASH_PRODUCTION_URL or JAZZCASH_SANDBOX_URL in your .env file.");
+            throw new RuntimeException('JazzCash API URL is not configured. Please set JAZZCASH_PRODUCTION_URL or JAZZCASH_SANDBOX_URL in your .env file.');
         }
     }
 
@@ -103,7 +116,6 @@ class Payment
      */
     public function HashArray(array $data): string
     {
-
         $HashArray = [
             $data['pp_Amount'],
             $data['pp_BankID'],
@@ -119,20 +131,22 @@ class Payment
             $data['pp_TxnDateTime'],
             $data['pp_TxnExpiryDateTime'],
             $data['pp_TxnRefNo'],
-            $data['pp_TxnType'], $data['pp_Version'],
+            $data['pp_TxnType'],
+            $data['pp_Version'],
             $data['ppmpf_1'],
-            $data["ppmpf_2"],
+            $data['ppmpf_2'],
             $data['ppmpf_3'],
             $data['ppmpf_4'],
-            $data['ppmpf_5']
+            $data['ppmpf_5'],
         ];
 
         $SortedArray = $this->hash_key;
         for ($i = 0; $i < count($HashArray); $i++) {
-            if ($HashArray[$i] != 'undefined' and $HashArray[$i] != null and $HashArray[$i] != "") {
-                $SortedArray .= "&" . $HashArray[$i];
+            if ($HashArray[$i] != 'undefined' && $HashArray[$i] != null && $HashArray[$i] != '') {
+                $SortedArray .= '&' . $HashArray[$i];
             }
         }
+
         return hash_hmac('sha256', $SortedArray, $this->hash_key);
     }
 
@@ -140,25 +154,26 @@ class Payment
      * Set Amount for Orders
      *
      * @param float|int|string $amount The transaction amount
-     * @return static Returns self for method chaining
+     * @return $this
      * @throws InvalidArgumentException If amount is invalid
      */
-    public function setAmount(float|int|string $amount): static
+    public function setAmount($amount)
     {
         $amount = (float) $amount;
         if ($amount < 0) {
             throw new InvalidArgumentException('Amount must be positive');
         }
         $this->amount = $amount;
+
         return $this;
     }
 
     /**
      * Get the amount for Order
      *
-     * @return float|int The transaction amount
+     * @return float|int
      */
-    public function getAmount(): float|int
+    public function getAmount()
     {
         return $this->amount;
     }
@@ -167,11 +182,12 @@ class Payment
      * Set Bill Reference for Jazz Cash Order
      *
      * @param string $billref Bill reference number
-     * @return static Returns self for method chaining
+     * @return $this
      */
-    public function setBillReference(string $billref): static
+    public function setBillReference(string $billref)
     {
         $this->billreference = $billref;
+
         return $this;
     }
 
@@ -193,17 +209,19 @@ class Payment
      */
     public function getBillReference(): string
     {
-        return $this->getBillRefernce(); // Alias for backward compatibility
+        return $this->getBillRefernce();
     }
 
     /**
      * Set Product Description for Jazz Cash Order
      *
+     * @param string $description
+     * @return $this
      */
-    public function setProductDescription($description): static
+    public function setProductDescription($description)
     {
+        $this->productdescription = (string) $description;
 
-        $this->productdescription = $description;
         return $this;
     }
 
@@ -221,11 +239,12 @@ class Payment
      * Set the value of apiUrl
      *
      * @param string $apiUrl API URL
-     * @return static Returns self for method chaining
+     * @return $this
      */
-    public function setApiUrl(string $apiUrl): static
+    public function setApiUrl(string $apiUrl)
     {
         $this->apiUrl = $apiUrl;
+
         return $this;
     }
 
@@ -243,11 +262,12 @@ class Payment
      * Set the value for Refund API Url
      *
      * @param string $apiUrl Refund API URL
-     * @return static Returns self for method chaining
+     * @return $this
      */
-    public function setRefundApiUrl(string $apiUrl): static
+    public function setRefundApiUrl(string $apiUrl)
     {
         $this->refundURL = $apiUrl;
+
         return $this;
     }
 

@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+<phpunit backupGlobals="false"
          bootstrap="vendor/autoload.php"
          colors="true"
-         cacheDirectory=".phpunit.cache"
-         executionOrder="depends,defects"
-         beStrictAboutOutputDuringTests="true"
-         failOnRisky="true"
-         failOnWarning="true">
+         processIsolation="false"
+         stopOnFailure="false">
     <testsuites>
         <testsuite name="JazzCash Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
-    <source>
-        <include>
-            <directory>src</directory>
-        </include>
-    </source>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="JAZZCASH_PAYMENTMODE" value="sandbox"/>
@@ -29,4 +20,3 @@
         <env name="JAZZCASH_PRODUCTION_URL" value="https://jazzcash.com.pk"/>
     </php>
 </phpunit>
-
