@@ -1,3 +1,5 @@
+
+
 <!--suppress ALL -->
 <p align="center">
   <img src="logo_JazzCash.png" alt="JazzCash Payment Gateway" width="150"/><br/>
@@ -29,7 +31,7 @@ The merchant will implement all e-commerce functionality. The JazzCash service w
 This package only contains the hosted checkout process. There are no API endpoints specified for direct checkout.
 
 #### Integration Prerequisites
-Merchants must be registered with JazzCash prior to integration. After signing up for a JazzCash account, the merchant will receive the following unique values to operate: `Merchant_ID`, `Password`, `Hashkey`, `Sandbox URL`, and `Production URL`. These keys are used to get a one-time authentication token, which
+Merchants must be registered with JazzCash prior to integration. After signing up for a JazzCash account, the merchant will receive the following unique values to operate: `Merchant_ID`, `Password`, `Hashkey`, `Sandbox URL`, and `Production URL`. These keys are used to get a one-time authentication token, which is required for payment processing.
 
 #### Requirements
 
